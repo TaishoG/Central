@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestions Page</title>
+    <style>
+        /* ... Your existing CSS styles ... */
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Suggestions Page</h1>
+
+        <div id="suggestion-form">
+            <label for="suggestion-input">Write your suggestion:</label><br>
+            <textarea id="suggestion-input" rows="4" cols="50"></textarea><br>
+            <button onclick="addSuggestion()">Submit</button>
+            <p id="warning-message" class="error"></p>
+        </div>
+
+        <h2>Recent Suggestions:</h2>
+        <ul id="suggestion-list"></ul>
+    </div>
+
+    <script>
+        function addSuggestion() {
+            // Get the user's input
+            var suggestionText = document.getElementById("suggestion-input").value;
+            var warningMessage = document.getElementById("warning-message");
+
+            // Check for spam or inappropriate content
+            if (suggestionText.trim() === "") {
+                warningMessage.textContent = "Please enter a valid suggestion.";
+                return;
+            } else if (containsBadWords(suggestionText)) {
+                warningMessage.textContent = "Your suggestion contains inappropriate content.";
+                return;
+            }
+
+            // Clear any previous warning messages
+            warningMessage.textContent = "";
+
+            // Create a new list item to display the suggestion
+            var suggestionListItem = document.createElement("li");
+            suggestionListItem.className = "suggestion";
+            suggestionListItem.appendChild(document.createTextNode(suggestionText));
+
+            // Add the new suggestion to the list
+            var suggestionList = document.getElementById("suggestion-list");
+            suggestionList.appendChild(suggestionListItem);
+
+            // Clear the input field
+            document.getElementById("suggestion-input").value = "";
+        }
+
+        function containsBadWords(text) {
+            // Define a list of bad words to check against (you can add more)
+            var badWords = ["fuck", "bitch", "cock", "smd", "dick", "nigga", "mf", "gay", "kys", "kill", "dumb", "ass", "suck", "fag", "faggot", "shut", "stupid", "nerd", "website sucks", "nah", "whoop", "dead"];
+
+            // Convert text to lowercase for case-insensitive matching
+            text = text.toLowerCase();
+
+            // Check if the text contains any of the bad words
+            for (var i = 0; i < badWords.length; i++) {
+                if (text.includes(badWords[i])) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    </script>
+</body>
+</html>
